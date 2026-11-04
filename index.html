@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Revende Ways · Mapa interactivo</title>
+<style>
+:root{--bg:#f4f6fb;--bar:#ffffffee;--ink:#1d2540;--mut:#6b7491;--line:#d9deee;
+--c0:#b9c4f7;--c1:#b8d4f0;--c2:#9edcd0;--c3:#9aebbd;--k0:#7b8fe8;--k1:#6fa6d6;--k2:#5db3a2;--k3:#5bbf8a;
+--w0:128px;--w1:176px;--w2:168px;--w3:232px;--gap:46px;--pad:18px;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+:root:not([data-theme="light"]){}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#12162a;--bar:#171c34ee;--ink:#e8ecfb;--mut:#98a2c6;--line:#2a3157;
+--c0:#4a57a8;--c1:#2f5b88;--c2:#2a7468;--c3:#2b7a52}}
+:root[data-theme="dark"]{--bg:#12162a;--bar:#171c34ee;--ink:#e8ecfb;--mut:#98a2c6;--line:#2a3157;--c0:#4a57a8;--c1:#2f5b88;--c2:#2a7468;--c3:#2b7a52}
+@media (max-width:600px){:root{--w0:108px;--w1:146px;--w2:138px;--w3:196px;--gap:30px;--pad:12px}}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;margin:0}
+body{background:var(--bg);color:var(--ink);font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;display:flex;flex-direction:column;overflow:hidden}
+header{background:var(--bar);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);padding:10px 12px;display:flex;flex-direction:column;gap:8px;z-index:5}
+.top{display:flex;align-items:center;justify-content:space-between;gap:8px}
+h1{font-size:15px;margin:0;font-weight:700;letter-spacing:.2px;white-space:nowrap}
+h1 span{color:var(--mut);font-weight:500}
+.btns{display:flex;gap:6px}
+.btns button{font:inherit;font-size:13px;font-weight:600;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:999px;padding:7px 12px;cursor:pointer;min-height:34px}
+.btns button:disabled{opacity:.4;cursor:default}
+.btns button:not(:disabled):active{transform:scale(.96)}
+.crumbs{display:flex;gap:4px;align-items:center;overflow-x:auto;scrollbar-width:none;font-size:12px;min-height:22px;color:var(--mut)}
+.crumbs::-webkit-scrollbar{display:none}
+.crumbs button{font:inherit;color:var(--ink);background:none;border:0;padding:2px 6px;border-radius:6px;cursor:pointer;white-space:nowrap;max-width:150px;overflow:hidden;text-overflow:ellipsis}
+.crumbs button:hover{background:var(--line)}
+.crumbs i{font-style:normal;opacity:.6}
+#sc{flex:1;overflow:auto;position:relative;-webkit-overflow-scrolling:touch;overscroll-behavior:contain}
+#stage{position:relative;min-width:100%}
+svg{position:absolute;left:0;top:0;pointer-events:none;overflow:visible}
+svg path{fill:none;stroke-width:1.8;stroke-linecap:round;animation:draw .35s ease both}
+@keyframes draw{from{opacity:0}to{opacity:1}}
+.col{position:absolute}
+.col.new{animation:in .3s ease both}
+@keyframes in{from{opacity:0;transform:translateX(-10px)}to{opacity:1;transform:none}}
+.n{display:block;width:100%;margin:0 0 9px;text-align:left;font:inherit;font-size:13px;line-height:1.3;color:#1a2238;border:2px solid transparent;border-radius:10px;padding:9px 11px;cursor:pointer;position:relative;transition:opacity .2s,box-shadow .2s,transform .15s;box-shadow:0 1px 3px #0002}
+:root[data-theme="dark"] .n{color:#f1f4ff}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .n{color:#f1f4ff}}
+.n.d0{background:var(--c0);font-weight:700;font-size:14px}
+.n.d1{background:var(--c1);font-weight:600}
+.n.d2{background:var(--c2);font-weight:600}
+.n.d3{background:var(--c3);cursor:default}
+.n.has{padding-right:26px}
+.n.has::after{content:"›";position:absolute;right:10px;top:50%;transform:translateY(-52%);font-size:18px;font-weight:700;opacity:.65}
+.n.has:active{transform:scale(.98)}
+.n.dim{opacity:.5}
+.n.sel{opacity:1;border-color:var(--ink);box-shadow:0 3px 10px #0003}
+.n.sel::after{content:"‹"}
+.n.pulse{animation:pl 1.6s ease-in-out infinite}
+@keyframes pl{0%,100%{box-shadow:0 0 0 0 #7b8fe899}50%{box-shadow:0 0 0 9px #7b8fe800}}
+.hint{position:absolute;font-size:12px;color:var(--mut);white-space:nowrap}
+</style>
+</head>
+<body>
+<header>
+ <div class="top"><h1>Revende Ways <span>· mapa</span></h1>
+  <div class="btns"><button id="back" disabled>← Atrás</button><button id="home" disabled>⟲ Inicio</button></div></div>
+ <div class="crumbs" id="crumbs"></div>
+</header>
+<div id="sc"><div id="stage"><svg id="svg"></svg></div></div>
+<script>
+const D=["Revende Ways",[
+["Registro y elección de tienda",[["Qué es",["Registro, código de revendedor y elección de la tienda ideal entre 10 categorías"]],["Categorías",["Perfumería","Belleza y Cuidado Personal","Lencería","Salud","Indumentaria","Calzados","Bazar","Librería","Juguetería","Multishop"]],["Beneficios y oportunidades",["Arrancás rápido: registro simple y código propio listo para compartir","Elegís el rubro que más se adapta a tu público y a tu pasión","Podés empezar en un nicho y expandirte a otros","Mercado enorme: hay una categoría para casi cualquier cliente"]]]],
+["Configuración de ganancias y ofertas",[["Qué es",["Márgenes de % libres, promociones, combos y regalos con compra mínima"]],["Beneficios y oportunidades",["Libertad total de precios: vos decidís cuánto ganar","Competís como quieras (precio bajo o margen alto)","Combos y promos que aumentan el ticket promedio","Regalos con compra mínima que impulsan a comprar más","Podés adaptar la estrategia a cada cliente o temporada"]]]],
+["Objetivo por tienda",[["Qué es",["Cada tienda tiene una meta; al cumplirla se habilita la entrega de pedidos"]],["Beneficios y oportunidades",["Metas claras que te mantienen enfocado y motivado","Sensación de progreso y logro personal","Fomenta constancia y compromiso diario","Ordena el crecimiento del negocio paso a paso"]]]],
+["Negocio propio (modelo de dinero)",[["Qué es",["El emprendedor maneja el dinero en privado con su cliente"]],["Beneficios y oportunidades",["Independencia total: sos dueño de tu negocio","Relación directa y de confianza con tus clientes","Cobrás y negociás a tu manera","Nosotros ponemos los productos; vos solo vendés","Sin intermediarios en tu relación comercial"]]]],
+["Panel de gestión",[["Control de pedidos",["Pendientes, aprobados y confirmados con seguimiento claro"]],["Estadísticas automáticas",["Inversión y ganancia calculadas solas","Productos más vendidos","Ranking de mejores clientes","Paneles gráficos para decisiones con datos"]],["Fidelización",["Cupones de regalo a tus mejores clientes del mes con un clic"]],["Facturación",["Facturas pendientes y pagas automáticas","Seña automática para asegurar la venta","Estadísticas y facturas descargables"]],["Beneficio general",["Todo se maneja con pocos clics, desde el celular"]]]],
+["Programa de afiliados",[["Qué es",["Código AFI único, enlace automático y vinculación automática"]],["Beneficios y oportunidades",["Ingresos pasivos que se suman a tus ganancias de venta","Comisiones constantes por cada afiliado activo","Incentivo a ayudar a otros a emprender","Construís una red que crece sin que vos vendas","Sin gestión manual: todo se vincula solo"]]]],
+["Tienda propia",[["Identidad de marca",["Colores extraídos del logo (canvas)","Nombre y datos propios consistentes","Estética adaptada y profesional"]],["Catálogo",["Personalizado a tu manera","Enlace individual por producto","Precios manuales (individuales o en catálogo general)"]],["Contacto",["Botones directos a WhatsApp para reducir fricción"]]]],
+["Panel de afiliados",[["Gestión",["Mejores afiliados y motivación de red","Estadísticas automáticas de red","Descuentos por nivel"]],["Pagos",["Comisiones automáticas liquidadas todos los meses","Retiro por transferencia","Uso de comisiones como créditos en stock propio"]],["Beneficios y oportunidades",["Visibilidad total de tu red y su rendimiento","Cobro puntual y sin trámites","Flexibilidad: retirás dinero o lo reinvertís"]]]],
+["Envíos sin costo",[["Beneficios y oportunidades",["Cero preocupación logística: Revende Ways se encarga","Tu única ocupación es vender","Sin gastos de envío que reduzcan tu margen","Mejor experiencia para tu cliente"]]]],
+["Productos por temporada",[["Beneficios y oportunidades",["Catálogo siempre renovado para cada época del año","Nunca ofrecés lo mismo a tus clientes","Más motivos de compra y recompra durante todo el año","Ventas estables, sin depender de una sola temporada"]]]]
+]];
+const norm=x=>typeof x==='string'?{l:x,c:null}:{l:x[0],c:x[1].map(norm)};
+const root=norm(D);
+let path=[];
+const $=id=>document.getElementById(id),st=$('stage'),sc=$('sc'),svg=$('svg');
+const css=n=>parseFloat(getComputedStyle(document.documentElement).getPropertyValue(n));
+const cv=['--k0','--k1','--k2','--k3'];
+function render(grow){
+ st.querySelectorAll('.col,.hint').forEach(e=>e.remove());
+ const cols=[[root]];path.forEach(n=>{if(n.c)cols.push(n.c)});
+ const W=[css('--w0'),css('--w1'),css('--w2'),css('--w3')],G=css('--gap'),P=css('--pad');
+ let x=P;const info=[];
+ cols.forEach((col,i)=>{
+  const el=document.createElement('div');el.className='col'+(grow&&i===cols.length-1&&i>0?' new':'');
+  el.style.width=W[i]+'px';el.style.left=x+'px';
+  col.forEach(n=>{
+   const b=document.createElement('button');
+   b.className='n d'+i+(n.c?' has':'');b.textContent=n.l;
+   const sel=path[i]===n;
+   if(sel)b.classList.add('sel');else if(path[i])b.classList.add('dim');
+   if(i===0&&!path.length)b.classList.add('pulse');
+   if(n.c)b.onclick=()=>pick(i,n);
+   n.el=b;el.appendChild(b);
+  });
+  st.appendChild(el);info.push({el,x,w:W[i]});x+=W[i]+G;
+ });
+ const sr=st.getBoundingClientRect();
+ let maxB=0;
+ cols.forEach((col,i)=>{
+  const h=info[i].el.offsetHeight;let top=P;
+  if(i>0){const pe=path[i-1].el,r=pe.getBoundingClientRect();top=Math.max(P,r.top-sr.top+r.height/2-h/2)}
+  info[i].el.style.top=top+'px';info[i].top=top;info[i].h=h;maxB=Math.max(maxB,top+h);
+ });
+ const totalW=x-G+P,totalH=maxB+P+30;
+ st.style.width=totalW+'px';st.style.height=totalH+'px';
+ svg.setAttribute('width',totalW);svg.setAttribute('height',totalH);svg.innerHTML='';
+ const sr2=st.getBoundingClientRect();
+ path.forEach((p,i)=>{
+  if(!p.c)return;const a=p.el.getBoundingClientRect();
+  const x1=a.right-sr2.left,y1=a.top-sr2.top+a.height/2;
+  p.c.forEach(c=>{const b=c.el.getBoundingClientRect(),x2=b.left-sr2.left,y2=b.top-sr2.top+b.height/2,m=(x1+x2)/2;
+   const pa=document.createElementNS('http://www.w3.org/2000/svg','path');
+   pa.setAttribute('d',`M${x1} ${y1}C${m} ${y1} ${m} ${y2} ${x2} ${y2}`);
+   pa.style.stroke=`var(${cv[Math.min(i+1,3)]})`;svg.appendChild(pa)});
+ });
+ if(!path.length){const h=document.createElement('div');h.className='hint';h.textContent='Tocá para comenzar';
+  h.style.left=P+'px';h.style.top=(info[0].top+info[0].h+8)+'px';st.appendChild(h)}
+ $('back').disabled=$('home').disabled=!path.length;
+ const cr=$('crumbs');cr.innerHTML='';
+ const mk=(t,k)=>{const b=document.createElement('button');b.textContent=t;b.onclick=()=>{path=path.slice(0,k);render(false)};return b};
+ if(path.length){cr.appendChild(mk('Inicio',0));path.forEach((n,k)=>{const s=document.createElement('i');s.textContent='›';cr.appendChild(s);cr.appendChild(mk(n.l,k+1))});cr.scrollLeft=cr.scrollWidth}
+ else cr.innerHTML='<span>Explorá el mapa tocando cada opción</span>';
+ if(grow){const L=info.length-1,pi=Math.max(0,L-1);
+  sc.scrollTo({left:Math.max(0,info[pi].x-P),top:Math.max(0,info[L].top+info[L].h/2-sc.clientHeight/2),behavior:'smooth'})}
+}
+function pick(i,n){const was=path[i]===n;path=path.slice(0,i);if(!was)path.push(n);render(!was)}
+$('back').onclick=()=>{path.pop();render(false);sc.scrollTo({left:Math.max(0,sc.scrollLeft-0),behavior:'smooth'})};
+$('home').onclick=()=>{path=[];render(false);sc.scrollTo({left:0,top:0,behavior:'smooth'})};
+let rt;addEventListener('resize',()=>{clearTimeout(rt);rt=setTimeout(()=>render(false),120)});
+render(false);
+</script>
+</body>
+</html>
