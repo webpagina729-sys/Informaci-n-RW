@@ -8,13 +8,13 @@
 <style>
 :root{--bg:#f4f6fb;--bar:#ffffffee;--ink:#1d2540;--mut:#6b7491;--line:#d9deee;
 --c0:#b9c4f7;--c1:#b8d4f0;--c2:#9edcd0;--c3:#9aebbd;--k0:#7b8fe8;--k1:#6fa6d6;--k2:#5db3a2;--k3:#5bbf8a;
---w0:128px;--w1:176px;--w2:168px;--w3:232px;--gap:46px;--pad:18px;
+--w0:156px;--w1:176px;--w2:168px;--w3:232px;--gap:46px;--pad:18px;
 box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
 :root:not([data-theme="light"]){}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#12162a;--bar:#171c34ee;--ink:#e8ecfb;--mut:#98a2c6;--line:#2a3157;
 --c0:#4a57a8;--c1:#2f5b88;--c2:#2a7468;--c3:#2b7a52}}
 :root[data-theme="dark"]{--bg:#12162a;--bar:#171c34ee;--ink:#e8ecfb;--mut:#98a2c6;--line:#2a3157;--c0:#4a57a8;--c1:#2f5b88;--c2:#2a7468;--c3:#2b7a52}
-@media (max-width:600px){:root{--w0:108px;--w1:146px;--w2:138px;--w3:196px;--gap:30px;--pad:12px}}
+@media (max-width:600px){:root{--w0:140px;--w1:146px;--w2:138px;--w3:196px;--gap:30px;--pad:12px}}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html,body{height:100%;margin:0}
 body{background:var(--bg);color:var(--ink);font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;display:flex;flex-direction:column;overflow:hidden}
@@ -78,30 +78,78 @@ const D=["Revende Ways",[
 ["Envíos sin costo",[["Beneficios y oportunidades",["No te preocupás por la logística: Revende Ways se encarga.","Tu única tarea es vender; del resto nos ocupamos nosotros.","Sin gastos de envío que te recorten el margen.","Tus clientes tienen una mejor experiencia, y eso ayuda a que vuelvan."]]]],
 ["Productos por temporada",[["Beneficios y oportunidades",["El catálogo se renueva en cada época del año, así siempre hay algo nuevo para mostrar.","Nunca ofrecés lo mismo a tus clientes: siempre hay alguna novedad.","Hay más motivos de compra y de recompra durante todo el año.","Las ventas se mantienen más estables, sin depender de una sola temporada."]]]]
 ]];
+const A=["Funcionalidad A: Tienda y Ventas",[
+["1. Oportunidades que ofrece",[
+["Elegir tu rubro entre 10 categorías",[["Ejemplos de uso",["Empezar con una categoría donde ya conocés a tu público","Vender Lencería, Salud o Belleza a clientas de confianza","Usar Multishop para ofrecer de todo a un mismo cliente"]],["Posibilidades concretas",["➜ Arrancar en un nicho y sumar otras tiendas al cumplir el objetivo","➜ Ofrecer según la ocasión: regalos, cumpleaños, fiestas, uso personal"]]]],
+["Fijar tus márgenes con total libertad",[["Ejemplos de uso",["Margen alto en productos exclusivos","Margen bajo en 2 o 3 productos “gancho” que atraen clientes","Precio manual distinto para catálogo general y ofertas puntuales"]],["Posibilidades concretas",["➜ Competir por precio o por exclusividad, según tu cliente","➜ Cambiar márgenes según la demanda de cada época"]]]],
+["Crear promociones, combos y regalos",[["Ejemplos de uso",["Combo en perfumes, lencería o cualquier categoría: seleccionás productos y tus clientes obtienen un descuento comprando el combo","Regalo con compra mínima para que el cliente agregue más productos","Promos de Día de la Madre, Navidad o Black Friday"]],["Posibilidades concretas",["➜ Subir el ticket promedio sin bajar tu ganancia total","➜ Liquidar productos de menor rotación dentro de un combo"]]]],
+["Construir tu tienda con tu marca",[["Ejemplos de uso",["Adoptar los colores de tu logo extrayendo los códigos desde Canva o utilizando IA, luego pegás esos códigos en los cuadros de color de tu tienda","Elegir nombre, datos y catálogo propios","Mostrar solo los productos que le sirven a tu público"]],["Posibilidades concretas",["➜ Mantener la misma imagen en tienda, redes y facturas","➜ Posicionarte como una marca, no como “uno más que revende”"]]]],
+["Vender por redes con enlaces y botones",[["Ejemplos de uso",["Compartir un producto puntual en estados e historias con su link","Poner el botón de WhatsApp en cada producto","Mandar el catálogo general a clientes nuevos"]],["Posibilidades concretas",["➜ Cerrar la venta en el momento en que el cliente consulta","➜ Convertir cada publicación en una vía directa de compra"]]]],
+["Aprovechar envíos sin costo y productos por temporada",[["Ejemplos de uso",["“Envío incluido” es un buen argumento de venta porque los envíos te llegan sin costo","Anunciar cada novedad de temporada como “lanzamiento”","Publicar “novedad de la semana” como rutina de contenido"]],["Posibilidades concretas",["➜ Escribirle a clientes anteriores cuando entra algo afín a lo que compraron","➜ Planificar un calendario anual de promos"]]]]
+]],
+["2. Beneficios concretos para el usuario",[
+["Ganancias bajo tu control",["✔ Vos decidís cuánto ganar en cada producto","✔ Combos y regalos aumentan el monto de cada pedido","✔ Sin costo de envío que reduzca tu margen"]],
+["Imagen profesional",["✔ Tienda única con tu identidad","✔ Catálogo personalizado a tu manera","✔ Misma estética en todos tus canales"]],
+["Ventas más simples",["✔ El cliente te escribe en un toque, con menos fricción de compra","✔ Link individual por producto, fácil de compartir","✔ Tu única ocupación es vender, la logística la resuelve Revende Ways"]],
+["Enfoque y constancia",["✔ Cada tienda tiene un objetivo claro","✔ Al cumplirlo se habilita la entrega de pedidos","➜ Dividir la meta en pasos semanales y seguir tu avance"]],
+["Ventas todo el año",["✔ Catálogo renovado en cada temporada","✔ Nunca ofrecés lo mismo a tus clientes","✔ Más motivos de compra y recompra, sin depender de una sola época"]]
+]]
+]];
+const B=["Funcionalidad B: Gestión del Negocio",[
+["1. Nuevas posibilidades de negocio",[
+["Ser dueño de tu propio negocio",[["Ejemplos de uso",["Manejar el dinero en privado con tu cliente","Definir tus formas de pago (efectivo, transferencia, seña)","Poner condiciones distintas según el cliente"]],["Posibilidades concretas",["➜ Construir tu propia cartera de clientes fieles","➜ Manejar tu horario y tu estilo de venta"]]]],
+["Controlar tus pedidos en un solo lugar",[["Ejemplos de uso",["Pedidos pendientes: los que esperan aprobación","Pedidos aprobados: listos para avanzar con el envío de factura al cliente con la fecha límite de entrega de seña","Pedidos confirmados: una vez recibida la seña los pedidos se confirman"]],["Posibilidades concretas",["➜ Avisarle al cliente en cada etapa","➜ Revisar el panel todos los días para no perder ninguna venta"]]]],
+["Tomar decisiones con estadísticas automáticas",[["Ejemplos de uso",["Ver tu inversión y ganancia sin hacer cuentas","Ver los productos más vendidos","Comparar semanas y meses en paneles gráficos"]],["Posibilidades concretas",["➜ Ajustar márgenes si una venta deja poco","➜ Promocionar más los top ventas y armar combos con ellos","➜ Repetir la estrategia que mejor resultado dio"]]]],
+["Fidelizar a tus mejores clientes",[["Ejemplos de uso",["Consultar el ranking de mejores clientes del mes","Enviar cupones de regalo con un clic","Dar atención prioritaria y ofertas exclusivas"]],["Posibilidades concretas",["➜ Cerrar cada mes con un cupón a tus clientes clave","➜ Generar recompra y recomendaciones"]]]],
+["Facturar con imagen profesional",[["Ejemplos de uso",["Facturas pendientes y pagas que se arman solas","Seña automática en pedidos grandes o por encargo","Descarga de facturas y estadísticas"]],["Posibilidades concretas",["➜ Enviar la factura apenas se confirma el pedido","➜ Aceptar encargos con seña para asegurar la venta","➜ Llevar un registro ordenado de tu negocio cada mes"]]]]
+]],
+["2. Ahorro de tiempo, crecimiento o ingresos",[
+["Ahorro de tiempo",["✔ Facturas y estadísticas automáticas","✔ Sin planillas ni cuentas manuales","✔ Gestión con pocos clics desde el celular","➜ Usar el tiempo ahorrado para atender más consultas"]],
+["Crecimiento",["✔ Decisiones basadas en datos reales","✔ Visibilidad de qué productos y clientes mueven tu negocio","➜ Escalar lo que funciona y dejar de insistir con lo que no"]],
+["Ingresos",["✔ Más recompra con cupones y atención prioritaria","✔ Menos ventas perdidas por falta de seguimiento","✔ Seña que asegura el pedido antes de entregar","✔ Control real de inversión y ganancia en cada venta"]],
+["Orden y profesionalismo",["✔ Documentación lista para enviar a tus clientes","✔ Reportes descargables para llevar tu propio control","✔ Imagen de negocio serio que genera confianza"]]
+]]
+]];
+const C=["Funcionalidad C: Red de Afiliados",[
+["1. Formas de aprovechar la herramienta",[
+["Activar tu código AFI",[["Ejemplos de uso",["Poner tu enlace en la bio de tus redes para que nuevas personas se registren","Compartirlo en estados, grupos y comunidades","Mandarlo directamente a conocidos que quieran emprender"]],["Posibilidades concretas",["➜ Sumar afiliados sin trámites: la vinculación es automática","➜ Dedicar un día a la semana a captar y activar afiliados"]]]],
+["Acompañar y liderar tu red",[["Ejemplos de uso",["Contar tu experiencia y mostrar resultados reales","Compartir consejos y materiales para vender","Reconocer a los afiliados que más venden"]],["Posibilidades concretas",["➜ Posicionarte como mentor del grupo","➜ Motivar a tu red para que sus ventas generen tus comisiones"]]]],
+["Gestionar desde el Panel de Afiliados",[["Ejemplos de uso",["Ver el ranking de mejores afiliados","Revisar estadísticas automáticas de tu red","Consultar los descuentos por nivel"]],["Posibilidades concretas",["➜ Detectar afiliados inactivos y contactarlos para reactivarlos","➜ Mostrarles cómo subir de nivel para obtener mejores precios","➜ Revisar el panel cada semana y ajustar tu estrategia de captación"]]]],
+["Usar tus comisiones y créditos",[["Ejemplos de uso",["Retirar las comisiones por transferencia","Reinvertirlas en stock propio para entrega inmediata","Combinarlas con tus propias ganancias de venta"]],["Posibilidades concretas",["➜ Elegir cada mes entre cobrar o crecer","➜ Vender con stock propio sin esperar el siguiente pedido"]]]]
+]],
+["2. Ventajas y resultados esperados",[
+["Ingresos pasivos",["✔ Comisiones constantes por cada afiliado activo","✔ Liquidación automática todos los meses","✔ Se suman a tus ganancias de venta"]],
+["Una red que crece sola",["✔ Vinculación automática, sin gestión manual","✔ Cada afiliado nuevo amplía tu alcance","✔ Podés ganar aunque un día no vendas"]],
+["Flexibilidad financiera",["✔ Cobro puntual y sin trámites","✔ Retiro por transferencia o reinversión en mercadería","✔ Ingresos mensuales que podés planificar"]],
+["Crecimiento por niveles",["✔ Descuentos que mejoran a medida que subís","➜ Marcarte metas de nivel y compartirlas con tu red"]],
+["Impacto real",["✔ Ayudás a otros a emprender","✔ Armás un activo propio: tu red de emprendedores","✔ Tu negocio crece por dos caminos: ventas y afiliados"]]
+]]
+]];
 const norm=x=>typeof x==='string'?{l:x,c:null}:{l:x[0],c:x[1].map(norm)};
-const root=norm(D);
+const roots=[D,A,B,C].map(norm);
 let path=[];
 const $=id=>document.getElementById(id),st=$('stage'),sc=$('sc'),svg=$('svg');
 const css=n=>parseFloat(getComputedStyle(document.documentElement).getPropertyValue(n));
 const cv=['--k0','--k1','--k2','--k3'];
 function render(grow){
  st.querySelectorAll('.col,.hint').forEach(e=>e.remove());
- const cols=[[root]];path.forEach(n=>{if(n.c)cols.push(n.c)});
+ const cols=[roots];path.forEach(n=>{if(n.c)cols.push(n.c)});
  const W=[css('--w0'),css('--w1'),css('--w2'),css('--w3')],G=css('--gap'),P=css('--pad');
  let x=P;const info=[];
  cols.forEach((col,i)=>{
+  const w=i===0?W[0]:(col.some(n=>n.c)?W[Math.min(i,2)]:W[3]);
   const el=document.createElement('div');el.className='col'+(grow&&i===cols.length-1&&i>0?' new':'');
-  el.style.width=W[i]+'px';el.style.left=x+'px';
+  el.style.width=w+'px';el.style.left=x+'px';
   col.forEach(n=>{
    const b=document.createElement('button');
-   b.className='n d'+i+(n.c?' has':'');b.textContent=n.l;
+   b.className='n d'+(n.c?Math.min(i,2):3)+(n.c?' has':'');b.textContent=n.l;
    const sel=path[i]===n;
    if(sel)b.classList.add('sel');else if(path[i])b.classList.add('dim');
    if(i===0&&!path.length)b.classList.add('pulse');
    if(n.c)b.onclick=()=>pick(i,n);
    n.el=b;el.appendChild(b);
   });
-  st.appendChild(el);info.push({el,x,w:W[i]});x+=W[i]+G;
+  st.appendChild(el);info.push({el,x,w});x+=w+G;
  });
  const sr=st.getBoundingClientRect();
  let maxB=0;
